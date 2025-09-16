@@ -1,0 +1,174 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title mb-0">
+                    <i class="bi bi-translate"></i> English to Khmer Translator
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'core:translate' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="english_text" class="form-label">
+                            <strong>Enter English Text:</strong>
+                        </label>
+                        <textarea 
+                            class="form-control" 
+                            id="english_text" 
+                            name="english_text" 
+                            rows="6"
+                            placeholder="Type your English text here..."
+                            required
+                            maxlength="5000"
+                        >{% if english_text %}{{ english_text }}{% endif %}</textarea>
+                        <div class="form-text">Maximum 5000 characters</div>
+                    </div>
+                    
+                    <!-- Simple translation form - HuggingFace is the only method -->
+                    <div class="mb-3">
+                        <div class="alert alert-info">
+                            <h6 class="alert-heading">🤗 HuggingFace Neural Translation</h6>
+                            <p class="mb-0">
+                                This translator uses free AI models from HuggingFace for neural machine translation.
+                                {% if huggingface_model_info.current_model %}
+                                    Current model: <strong>{{ huggingface_model_info.current_model }}</strong> ({{ huggingface_model_info.quality }} quality)
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-arrow-right-circle"></i> Translate to Khmer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Translation Result -->
+        {% if translation_successful and khmer_text %}
+        <div class="card shadow mt-4">
+            <div class="card-header bg-success text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0">
+                            <i class="bi bi-check-circle"></i> Translation Result
+                            {% if used_ai_mode %}
+                                <span class="badge bg-primary ms-2">🤖 AI Translation</span>
+                            {% else %}
+                                <span class="badge bg-secondary ms-2">📝 Simple Mode</span>
+                            {% endif %}
+                        </h3>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-{{ confidence_color }} me-2">
+                                {{ confidence_level }} Confidence
+                            </span>
+                            <span class="badge bg-light text-dark">
+                                {{ accuracy_percentage }}% Accuracy
+                            </span>
+                        </div>
+                    </div>
+                    {% if translation_method %}
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="bi bi-gear"></i> Method: {{ translation_method }}
+                        </small>
+                    </div>
+                    {% endif %}
+            </div>
+            <div class="card-body">
+                <!-- Confidence Meter -->
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-muted">Translation Confidence</small>
+                        <small class="text-muted">{{ accuracy_percentage }}%</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-{{ confidence_color }}" 
+                             role="progressbar" 
+                             style="width: {{ accuracy_percentage }}%"
+                             aria-valuenow="{{ accuracy_percentage }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                        </div>
+                    </div>
+                    <small class="text-muted">
+                        {% if accuracy_percentage >= 85 %}
+                            <i class="bi bi-check-circle text-success"></i> Highly confident translation
+                        {% elif accuracy_percentage >= 70 %}
+                            <i class="bi bi-check text-primary"></i> Good quality translation
+                        {% elif accuracy_percentage >= 50 %}
+                            <i class="bi bi-exclamation-triangle text-warning"></i> Moderate confidence
+                        {% else %}
+                            <i class="bi bi-x-circle text-danger"></i> Low confidence - consider reviewing
+                        {% endif %}
+                    </small>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-muted">English:</h5>
+                        <div class="bg-light p-3 rounded border">
+                            {{ english_text }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-muted">Khmer:</h5>
+                        <div class="bg-light p-3 rounded border khmer-text">
+                            {{ khmer_text }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recent Translations -->
+        {% if recent_translations %}
+        <div class="card shadow mt-4">
+            <div class="card-header bg-info text-white">
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-clock-history"></i> Recent Translations
+                </h3>
+            </div>
+            <div class="card-body">
+                {% for translation in recent_translations %}
+                <div class="border-bottom pb-3 mb-3">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h6 class="text-muted">English:</h6>
+                            <p class="small">{{ translation.english_text|truncatechars:100 }}</p>
+                        </div>
+                        <div class="col-md-5">
+                            <h6 class="text-muted">Khmer:</h6>
+                            <p class="small khmer-text">{{ translation.khmer_text|truncatechars:100 }}</p>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <span class="badge bg-{{ translation.confidence_color }} mb-1">
+                                {{ translation.accuracy_percentage }}%
+                            </span>
+                            <br>
+                            <small class="text-muted">{{ translation.confidence_level }}</small>
+                        </div>
+                    </div>
+                    <small class="text-muted">
+                        <i class="bi bi-calendar"></i> {{ translation.timestamp|date:"M d, Y H:i" }}
+                    </small>
+                </div>
+                {% endfor %}
+                
+                <div class="text-center mt-3">
+                    <a href="{% url 'core:history' %}" class="btn btn-outline-info">
+                        View Full History
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

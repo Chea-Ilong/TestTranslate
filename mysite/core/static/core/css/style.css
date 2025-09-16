@@ -1,0 +1,300 @@
+/* Custom CSS for English to Khmer Translator */
+
+/* Khmer Text Styling */
+.khmer-text {
+    font-family: 'Noto Sans Khmer', Arial, sans-serif;
+    font-size: 1.1em;
+    line-height: 1.6;
+    direction: ltr;
+    text-align: left;
+}
+
+/* Body and general styling */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navigation bar enhancements */
+.navbar-brand {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+/* Card styling enhancements */
+.card {
+    border: none;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+    border-bottom: none;
+    padding: 1.25rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Form styling */
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Button styling */
+.btn {
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* Alert styling */
+.alert {
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+}
+
+/* Translation result styling */
+.translation-result {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border: 2px solid #28a745;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Recent translations styling */
+.recent-translations .border-bottom:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Table styling */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    color: #495057;
+    background-color: #f8f9fa;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Modal styling */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+/* Footer styling */
+footer {
+    margin-top: auto;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .btn-lg {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .khmer-text {
+        font-size: 1rem;
+    }
+}
+
+/* Loading animation for translation */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Text truncation utility */
+.text-truncate-custom {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 250px;
+}
+
+/* Icon styling */
+.bi {
+    margin-right: 0.5rem;
+}
+
+/* Enhanced shadow for cards */
+.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hover effects for interactive elements */
+.card:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* Improved focus styles for accessibility */
+.btn:focus,
+.form-control:focus {
+    outline: none;
+}
+
+/* Custom styling for success states */
+.bg-success-light {
+    background-color: #d1e7dd !important;
+}
+
+.text-success-dark {
+    color: #0a3622 !important;
+}
+
+/* Character counter styling */
+.char-counter {
+    font-size: 0.875rem;
+    color: #6c757d;
+    text-align: right;
+    margin-top: 0.25rem;
+}
+
+/* Confidence scoring styles */
+.confidence-meter {
+    margin-bottom: 1rem;
+}
+
+.confidence-badge {
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+}
+
+.progress {
+    background-color: #f8f9fa;
+}
+
+.confidence-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Accuracy level colors */
+.accuracy-high {
+    color: #198754 !important;
+}
+
+.accuracy-good {
+    color: #0d6efd !important;
+}
+
+.accuracy-medium {
+    color: #fd7e14 !important;
+}
+
+.accuracy-low {
+    color: #dc3545 !important;
+}
+
+/* Enhanced badge styling */
+.badge {
+    font-size: 0.75rem;
+}
+
+.badge.bg-success {
+    background-color: #198754 !important;
+}
+
+.badge.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.badge.bg-warning {
+    background-color: #fd7e14 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+/* Translation result confidence styling */
+.translation-confidence {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+}
+
+/* Responsive adjustments for confidence display */
+@media (max-width: 768px) {
+    .confidence-badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .confidence-meter {
+        margin-bottom: 0.75rem;
+    }
+}

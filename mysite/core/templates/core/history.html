@@ -1,0 +1,125 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Translation History - English to Khmer Translator{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h2 class="card-title mb-0">
+                    <i class="bi bi-clock-history"></i> Translation History
+                </h2>
+            </div>
+            <div class="card-body">
+                {% if translations %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 30%">English Text</th>
+                                    <th style="width: 30%">Khmer Translation</th>
+                                    <th style="width: 15%">Accuracy</th>
+                                    <th style="width: 15%">Date & Time</th>
+                                    <th style="width: 10%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for translation in translations %}
+                                <tr>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 200px;" title="{{ translation.english_text }}">
+                                            {{ translation.english_text }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-truncate khmer-text" style="max-width: 200px;" title="{{ translation.khmer_text }}">
+                                            {{ translation.khmer_text }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ translation.confidence_color }} mb-1">
+                                            {{ translation.accuracy_percentage }}%
+                                        </span>
+                                        <br>
+                                        <small class="text-muted">{{ translation.confidence_level }}</small>
+                                    </td>
+                                    <td>
+                                        <small>
+                                            {{ translation.timestamp|date:"M d, Y" }}<br>
+                                            {{ translation.timestamp|time:"H:i" }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewTranslation({{ translation.id }})">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    {% if translations|length >= 50 %}
+                    <div class="alert alert-info mt-3">
+                        <i class="bi bi-info-circle"></i> Showing the 50 most recent translations.
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-translate" style="font-size: 3rem; color: #ccc;"></i>
+                        <h4 class="text-muted mt-3">No translations yet</h4>
+                        <p class="text-muted">Start by translating some English text to Khmer!</p>
+                        <a href="{% url 'core:home' %}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Start Translating
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for viewing full translation -->
+<div class="modal fade" id="translationModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Translation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">English Text:</h6>
+                        <div class="bg-light p-3 rounded border" id="modalEnglishText"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Khmer Translation:</h6>
+                        <div class="bg-light p-3 rounded border khmer-text" id="modalKhmerText"></div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar"></i> Translated on: <span id="modalTimestamp"></span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// JavaScript for viewing full translations (this would need backend API)
+function viewTranslation(translationId) {
+    // For now, just show a placeholder modal
+    // In a real app, you'd fetch the full translation data via AJAX
+    const modal = new bootstrap.Modal(document.getElementById('translationModal'));
+    document.getElementById('modalEnglishText').textContent = 'Full English text would be loaded here...';
+    document.getElementById('modalKhmerText').textContent = 'Full Khmer text would be loaded here...';
+    document.getElementById('modalTimestamp').textContent = 'Loading...';
+    modal.show();
+}
+</script>
+{% endblock %}
